@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -60,6 +61,17 @@ public class CraftingTime extends JavaPlugin implements Listener{
 		}
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvents(this, this);
+	}
+	
+	@EventHandler
+	public void OperatorJoin(PlayerJoinEvent e){
+		Player p = e.getPlayer();
+		if(p.isOp()){
+			if (getConfig().getString("Auto-update").contains("false")) {
+				msg.info(p, "Please help the plugin with enabling metrics in config!");
+				return;
+			}
+		}
 	}
 	
 	@EventHandler
@@ -168,20 +180,8 @@ public class CraftingTime extends JavaPlugin implements Listener{
 						return true;
 					}
 					PlayerInventory pi = p.getInventory();
-					ItemStack c = new ItemStack(Material.WORKBENCH, 1);
-		            ItemMeta cmeta = c.getItemMeta();
-		            cmeta.setDisplayName(ChatColor.YELLOW + "Portable Crafting Table");
-		            c.setItemMeta(cmeta);
 		            
-		            if(pi.contains(c)){
-		            	msg.error(p, "You already have a " + ChatColor.YELLOW + "portable crafting table" + ChatColor.RED + "!");
-		            	return true;
-		            }
-		            if(!(pi.contains(c))){
-		            	pi.addItem(c);
-		            	msg.good(p, "You have got a " + ChatColor.YELLOW + "portable crafting table" + ChatColor.GREEN + "!");
-		            	return true;
-		            }
+		            pi.addItem(new ItemStack(Material.WORKBENCH, 1));
 				}
 			}
 		}
