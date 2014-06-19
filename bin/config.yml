@@ -1,0 +1,19 @@
+##########################
+#                        #
+#      CraftingTime      #
+#         Config         #
+#                        #
+##########################
+
+# Should the plugin auto update when there comes a new version available
+Auto-update: false
+
+# How many seconds should people have to craft in
+craft-time: 20
+
+# How many seconds should the cooldown be before they can place a crafting
+craft-cooldown: 200
+
+# CraftingTime is using Metrics, this will send information about the server to a website to make a statistic for CraftingTime. Read more about it on the BukkitDev page
+# Its recommended to have it set to true
+metrics-enable: true
