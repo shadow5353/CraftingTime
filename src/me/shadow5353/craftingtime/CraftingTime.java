@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,7 +55,7 @@ public class CraftingTime extends JavaPlugin implements Listener{
 			
 		}
 		if (getConfig().getString("Auto-update").contains("true")) {
-			Updater updater = new Updater(this, 65511, this.getFile(),Updater.UpdateType.DEFAULT, true);
+			Updater updater = new Updater(this, 81500, this.getFile(),Updater.UpdateType.DEFAULT, true);
 		}
 		if (getConfig().getString("Auto-update").contains("false")) {
 		}
@@ -126,7 +126,7 @@ public class CraftingTime extends JavaPlugin implements Listener{
 						place.remove(p);
 						ccooldown.add(p);
 						ccooldownTime.put(p, getConfig().getInt("craft-cooldown"));
-		                msg.good(p, "Your crafting tabel have disappeared, you can place a new one in " + getConfig().getInt("craft-cooldown") + " seconds!");
+		                msg.good(p, "Your crafting tabel have disappeared, you can place a new one in " + ccooldownTime.get(p) + " seconds!");
 					}
 				}
 			}.runTaskTimer(this, 20L, 20L);
@@ -182,6 +182,40 @@ public class CraftingTime extends JavaPlugin implements Listener{
 					PlayerInventory pi = p.getInventory();
 		            
 		            pi.addItem(new ItemStack(Material.WORKBENCH, 1));
+				}
+				if(args[0].equalsIgnoreCase("craft")){
+					if(!(p.hasPermission("craftingtime.craft"))){
+						msg.perm(p);
+						return true;
+					}
+					/*
+					 * To Do:
+					 * Add a 
+					 */
+					msg.notdone(p);
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("toggle")){
+					if(!(p.hasPermission("craftingtime.toggle"))){
+						msg.perm(p);
+						return true;
+					}
+					if(toggle.contains(p)){
+						msg.good(p, "You have untoggled CraftingTime, Crafting Tables will now remove after " + getConfig().getInt("craft-time") + " seconds!");
+						toggle.remove(p);
+						return true;
+					}
+					if(!(toggle.contains(p))){
+						msg.good(p, "You have toggled CraftingTime, Crafting Tables will not remove after " + getConfig().getInt("craft-time") + " seconds!");
+						toggle.add(p);
+						return true;
+					}
+				}
+				if(args[0].equalsIgnoreCase("reload")){
+					if(!(p.hasPermission("craftingtime.reload"))){
+						msg.perm(p);
+					}
+					msg.notdone(p);
 				}
 			}
 		}

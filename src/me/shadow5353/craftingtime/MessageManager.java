@@ -38,7 +38,7 @@ public class MessageManager {
 	}
 	
 	public void notdone(CommandSender s) {
-		msg(s, ChatColor.RED, "This command is not yet implemented");
+		msg(s, ChatColor.RED, "This feature is not yet implemented");
 	}
 
 	private void msg(CommandSender s, ChatColor color, String msg) {
